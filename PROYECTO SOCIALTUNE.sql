@@ -34,7 +34,9 @@ CREATE TABLE asistencia (
   IdGrupo int NOT NULL,
   Fecha date DEFAULT NULL,
   PRIMARY KEY (IdGrupo,IdEvento),
-  KEY IdEvento (IdEvento)
+  FOREIGN KEY (IdEvento) REFERENCES Evento(ID),
+  FOREIGN KEY (IDGrupo) REFERENCES Grupo(ID),
+  CONSTRAINT PK_Asistencia PRIMARY KEY (IdGrupo,IdEvento)
 ) ;
 
 --
@@ -71,7 +73,7 @@ CREATE TABLE comentario (
   IDPublicacion int DEFAULT NULL,
   IDUsuario int DEFAULT NULL,
   PRIMARY KEY (ID),
-  FOREIGN KEY (IDPublicacion) REFERENCES IDPublicacion,
+  FOREIGN KEY (IDPublicacion) REFERENCES Publicacion(ID),
   FOREIGN KEY (IDUsuario) REFERENCES usuario (ID)
 ) ;
 -----
@@ -159,11 +161,11 @@ CREATE TABLE etiqueta (
 DROP TABLE IF EXISTS evento;
 
 CREATE TABLE evento (
-  CodEvento int NOT NULL AUTO_INCREMENT,
+  ID int NOT NULL AUTO_INCREMENT,
   Titulo varchar(255) DEFAULT NULL,
   Categoria varchar(50) DEFAULT NULL,
   Direccion text,
-  PRIMARY KEY (CodEvento)
+  PRIMARY KEY (ID)
 ) ;
 
 DROP TABLE IF EXISTS genero;
