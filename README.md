@@ -1,6 +1,6 @@
 # Proyecto-Final-Base
 
-## Integrantes:##
+## Integrantes: ##
 
 - Cardenas Rodriguez Mikaela
 - Góngora Rodríguez Nicole Patricia
