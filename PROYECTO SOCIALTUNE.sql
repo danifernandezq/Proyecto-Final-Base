@@ -116,7 +116,7 @@ CREATE TABLE `cancion` (
   KEY `IDGenero` (`IDGenero`),
   CONSTRAINT `cancion_ibfk_1` FOREIGN KEY (`IDUsuario`) REFERENCES `usuario` (`ID`),
   CONSTRAINT `cancion_ibfk_2` FOREIGN KEY (`IDGenero`) REFERENCES `genero` (`ID`)
-) ENGINE=InnoDB AUTO_INCREMENT=99 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=191 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -125,7 +125,7 @@ CREATE TABLE `cancion` (
 
 LOCK TABLES `cancion` WRITE;
 /*!40000 ALTER TABLE `cancion` DISABLE KEYS */;
-INSERT INTO `cancion` VALUES (45,'00:03:52','Cancion Oficial',1,5,'Borraxxa'),(46,'00:05:41','Cancion Oficial',NULL,1,'Wild Horses'),(67,'00:04:06','Cancion Oficial',2,4,'Titanium'),(78,'00:05:41','Cancion Oficial',10,3,'Locos'),(98,'00:05:09','Cancion Oficial',4,2,'Bad Romance');
+INSERT INTO `cancion` VALUES (45,'00:03:52','Cancion Oficial',1,5,'Borraxxa'),(46,'00:05:41','Cancion Oficial',NULL,1,'Wild Horses'),(67,'00:04:06','Cancion Oficial',2,4,'Titanium'),(78,'00:05:41','Cancion Oficial',1,3,'Locos'),(98,'00:05:09','Cancion Oficial',4,2,'Bad Romance'),(190,'00:05:04','Cancion independiente',7,5,'Borraxxa Cover by SChavez');
 /*!40000 ALTER TABLE `cancion` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -168,14 +168,17 @@ DROP TABLE IF EXISTS `composicion`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `composicion` (
+  `IDUsuario` int DEFAULT NULL,
   `IDArtista` int NOT NULL,
   `IDCancion` int NOT NULL,
   `YearLanzamiento` year DEFAULT NULL,
-  `nombreComposision` varchar(90) DEFAULT NULL,
+  `nombreComposicion` varchar(90) DEFAULT NULL,
   PRIMARY KEY (`IDArtista`,`IDCancion`),
+  KEY `IDUsuario` (`IDUsuario`),
   KEY `IDCancion` (`IDCancion`),
-  CONSTRAINT `composicion_ibfk_1` FOREIGN KEY (`IDArtista`) REFERENCES `artista` (`ID`),
-  CONSTRAINT `composicion_ibfk_2` FOREIGN KEY (`IDCancion`) REFERENCES `cancion` (`ID`)
+  CONSTRAINT `composicion_ibfk_1` FOREIGN KEY (`IDUsuario`) REFERENCES `usuario` (`ID`),
+  CONSTRAINT `composicion_ibfk_2` FOREIGN KEY (`IDArtista`) REFERENCES `artista` (`ID`),
+  CONSTRAINT `composicion_ibfk_3` FOREIGN KEY (`IDCancion`) REFERENCES `cancion` (`ID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -185,7 +188,7 @@ CREATE TABLE `composicion` (
 
 LOCK TABLES `composicion` WRITE;
 /*!40000 ALTER TABLE `composicion` DISABLE KEYS */;
-INSERT INTO `composicion` VALUES (1,46,1971,'Sticky Fingers'),(2,98,2009,'The Fame Monster'),(3,78,2016,'Voluma'),(4,67,2012,'Nothing but the beat'),(5,45,2020,'Borraxxa');
+INSERT INTO `composicion` VALUES (NULL,1,46,1971,'Sticky Fingers'),(NULL,2,98,2009,'The Fame Monster'),(NULL,3,78,2016,'Voluma'),(NULL,4,67,2012,'Nothing but the beat'),(NULL,5,45,2020,'Borraxxa'),(7,5,190,2020,'Borraxxa Cover by SChavez');
 /*!40000 ALTER TABLE `composicion` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -254,11 +257,14 @@ DROP TABLE IF EXISTS `etiqueta`;
 CREATE TABLE `etiqueta` (
   `IDPublicacion` int NOT NULL,
   `IDUsuario` int NOT NULL,
+  `IDEtiquetado` int NOT NULL,
   `fecha` date DEFAULT NULL,
   PRIMARY KEY (`IDPublicacion`,`IDUsuario`),
   KEY `IDUsuario` (`IDUsuario`),
+  KEY `IDEtiquetado` (`IDEtiquetado`),
   CONSTRAINT `etiqueta_ibfk_1` FOREIGN KEY (`IDPublicacion`) REFERENCES `publicacion` (`ID`),
-  CONSTRAINT `etiqueta_ibfk_2` FOREIGN KEY (`IDUsuario`) REFERENCES `usuario` (`ID`)
+  CONSTRAINT `etiqueta_ibfk_2` FOREIGN KEY (`IDUsuario`) REFERENCES `usuario` (`ID`),
+  CONSTRAINT `etiqueta_ibfk_3` FOREIGN KEY (`IDEtiquetado`) REFERENCES `usuario` (`ID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -268,7 +274,7 @@ CREATE TABLE `etiqueta` (
 
 LOCK TABLES `etiqueta` WRITE;
 /*!40000 ALTER TABLE `etiqueta` DISABLE KEYS */;
-INSERT INTO `etiqueta` VALUES (6200132,1,'2020-03-14'),(33000215,3,'2020-03-23'),(75544921,4,'2020-03-18'),(78468523,3,'2020-03-01'),(449852665,2,'2020-03-25');
+INSERT INTO `etiqueta` VALUES (6200132,3,1,'2020-03-14'),(33000215,3,5,'2020-03-23'),(75544921,4,5,'2020-03-18'),(78468523,1,2,'2020-03-01'),(449852665,2,4,'2020-03-25');
 /*!40000 ALTER TABLE `etiqueta` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -485,7 +491,7 @@ CREATE TABLE `publicacion` (
 
 LOCK TABLES `publicacion` WRITE;
 /*!40000 ALTER TABLE `publicacion` DISABLE KEYS */;
-INSERT INTO `publicacion` VALUES (6200132,'Quién esta escuchando Radiohead ahora mismo?',3,'2020-03-14'),(33000215,'Me gusta bailar mucho',4,'2020-03-18'),(75544921,'Me podrían recomendar pop?',2,'2020-03-23'),(78468523,'Hola,  a quienes les gusta el rock?',1,'2020-03-25'),(449852665,'Me guta peleal y salil lo fine de semana',5,'2020-03-01');
+INSERT INTO `publicacion` VALUES (6200132,'Quién esta escuchando Radiohead ahora mismo?',3,'2020-03-14'),(33000215,'Me gusta bailar mucho',4,'2020-03-18'),(75544921,'Me podrían recomendar pop?',2,'2020-03-23'),(78468523,'Hola, aqui te recomiendo una playlist https://socialtune/playlist.com',1,'2020-03-25'),(449852665,'Me guta peleal y salil lo fine de semana',5,'2020-03-01');
 /*!40000 ALTER TABLE `publicacion` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -649,7 +655,7 @@ CREATE TABLE `usuario` (
 
 LOCK TABLES `usuario` WRITE;
 /*!40000 ALTER TABLE `usuario` DISABLE KEYS */;
-INSERT INTO `usuario` VALUES (1,'Juan Carrasco','CarrascoJuansi@gmail.com','florsitaamor2020','Estudiante de la Universidad Privada Boliviana','img_23042020.jpg',6557843,'1998-03-30'),(2,'Carlos Vilaseca','ChalieVila@gmail.com','carlitos001','Bailarín profecional, Boliviano','img23022020uxzafgs.jpeg',60434354,'1992-06-23'),(3,'Cristian Paz','crispaz@gmail.com','pazcris123','Estudiante de la Universidad Catolica','img_25062020.jpg',69823161,'1997-05-14'),(4,'Lucia Gonzales','lalugon@gmail.com','lugonza001','Modelo Profesional','img1561951uxzafgs.jpeg',60316670,'1999-08-24'),(5,'Avye Morrow','avyerrowmo@gmail.com','ayves241','Fotógrafo Profesional Chileno','img15161203.png',78912346,'1990-01-12'),(6,'Julian Aramburo','julyguns@gmail.com','julysito15','Diseñador Grafico Profesional','img8794565.jpg',79151610,'2000-12-14'),(7,'Sergio Chavez','Chavezgio@gmail.com','sergitocha','Ingeniero Comercial, Boliviano','img251561.jpg',60434354,'1988-12-29'),(8,'Carlita Bresse','Bressecarla@gmail.com','bressie354',' Farmaceutica ','img64720224.png',76118103,'1995-04-11');
+INSERT INTO `usuario` VALUES (1,'Juan Carrasco','CarrascoJuansi@gmail.com','florsitaamor2020','Estudiante de la Universidad Privada Boliviana','img_23042020.jpg',6557843,'1998-03-30'),(2,'Carlos Vilaseca','ChalieVila@gmail.com','carlitos001','Bailarín profesional, Boliviano','img23022020uxzafgs.jpeg',60434354,'1992-06-23'),(3,'Cristian Paz','crispaz@gmail.com','pazcris123','Estudiante de la Universidad Catolica','img_25062020.jpg',69823161,'1997-05-14'),(4,'Lucia Gonzales','lalugon@gmail.com','lugonza001','Modelo Profesional','img1561951uxzafgs.jpeg',60316670,'1999-08-24'),(5,'Avye Morrow','avyerrowmo@gmail.com','ayves241','Fotógrafo Profesional Chileno','img15161203.png',78912346,'1990-01-12'),(6,'Julian Aramburo','julyguns@gmail.com','julysito15','Diseñador Grafico Profesional','img8794565.jpg',79151610,'2000-12-14'),(7,'Sergio Chavez','Chavezgio@gmail.com','sergitocha','Ingeniero Comercial, Boliviano','img251561.jpg',60434354,'1988-12-29'),(8,'Carlita Bresse','Bressecarla@gmail.com','bressie354',' Farmaceutica ','img64720224.png',76118103,'1995-04-11');
 /*!40000 ALTER TABLE `usuario` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -690,4 +696,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2020-03-24 20:18:49
+-- Dump completed on 2020-03-24 23:46:36
